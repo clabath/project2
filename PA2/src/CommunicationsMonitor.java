@@ -5,16 +5,18 @@ import java.util.List;
  * The CommunicationsMonitor class represents the graph G
  * built to answer infection queries.
  *
- * @author
- * @author
- * @author
+ * @author Kyle Bowden
+ * @author Cassandra Labath
+ * @author Kyle Trom
  */
 public class CommunicationsMonitor {
 
+	HashMap<Integer, List<ComputerNode> > nodeMap = new HashMap()<>; 
     /**
      * Constructor with no parameters
      */
     public CommunicationsMonitor() {
+    	
     }
 
     /**
@@ -26,7 +28,8 @@ public class CommunicationsMonitor {
      * @param c2        Second ComputerNode in the communication pair.
      * @param timestamp Time the communication took place.
      */
-    public void addCommunication(int c1, int c2, int timestamp) {
+    public void addCommunication(int c1, int c2, int timestamp){
+    	
     }
 
     /**
@@ -66,7 +69,7 @@ public class CommunicationsMonitor {
      * @return HashMap representing the mapping of an Integer and ComputerNode objects.
      */
     public HashMap<Integer, List<ComputerNode>> getComputerMapping() {
-        return null;
+        return ;
     }
 
     /**
@@ -76,6 +79,6 @@ public class CommunicationsMonitor {
      * @return ComputerNode objects associated with c.
      */
     public List<ComputerNode> getComputerMapping(int c) {
-        return null;
+        return ;
     }
 }

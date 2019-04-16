@@ -12,6 +12,12 @@ public class ComputerNode {
 	private int id;
 	private int time;
 	private List<ComputerNode> neighbors;
+	
+	public ComputerNode(int ID, int timestamp){
+		id = ID;
+		time = timestamp;
+	}
+	
     /**
      * Returns the ID of the associated computer.
      *
