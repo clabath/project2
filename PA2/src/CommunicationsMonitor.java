@@ -1,6 +1,6 @@
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.ArrayList;
 /**
  * The CommunicationsMonitor class represents the graph G
  * built to answer infection queries.
@@ -12,6 +12,7 @@ import java.util.List;
 public class CommunicationsMonitor {
 
 	HashMap<Integer, List<ComputerNode> > nodeMap = new HashMap<>(); 
+	ArrayList<triple> communications = new ArrayList<>();
     /**
      * Constructor with no parameters
      */
