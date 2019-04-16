@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class CommunicationsMonitor {
 
-	HashMap<Integer, List<ComputerNode> > nodeMap = new HashMap()<>; 
+	HashMap<Integer, List<ComputerNode> > nodeMap = new HashMap<>(); 
     /**
      * Constructor with no parameters
      */
@@ -69,7 +69,7 @@ public class CommunicationsMonitor {
      * @return HashMap representing the mapping of an Integer and ComputerNode objects.
      */
     public HashMap<Integer, List<ComputerNode>> getComputerMapping() {
-        return ;
+        return nodeMap;
     }
 
     /**
@@ -79,6 +79,6 @@ public class CommunicationsMonitor {
      * @return ComputerNode objects associated with c.
      */
     public List<ComputerNode> getComputerMapping(int c) {
-        return ;
+        return nodeMap.get(c);
     }
 }
