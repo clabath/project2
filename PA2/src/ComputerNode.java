@@ -3,19 +3,22 @@ import java.util.List;
 /**
  * The ComputerNode class represents the nodes of the graph G, which are pairs (Ci, t).
  *
- * @author
- * @author
- * @author
+ * @author Kyle Bowden
+ * @author Cassandra Labath
+ * @author Kyle Trom
  */
 public class ComputerNode {
 
+	private int id;
+	private int time;
+	private List<ComputerNode> neighbors;
     /**
      * Returns the ID of the associated computer.
      *
      * @return Associated Computer's ID
      */
     public int getID() {
-        return 0;
+        return id;
     }
 
     /**
@@ -24,7 +27,7 @@ public class ComputerNode {
      * @return Timestamp for the node
      */
     public int getTimestamp() {
-        return 0;
+        return time;
     }
 
     /**
@@ -33,7 +36,7 @@ public class ComputerNode {
      * @return a list of ComputerNode objects that have an edge from this to the nodes in the list.
      */
     public List<ComputerNode> getOutNeighbors() {
-        return null;
+        return neighbors;
     }
 
 }
