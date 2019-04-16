@@ -81,4 +81,17 @@ public class CommunicationsMonitor {
     public List<ComputerNode> getComputerMapping(int c) {
         return nodeMap.get(c);
     }
+    
+    
+    public class triple {
+    	public int c1;
+    	public int c2;
+    	public int timestamp;
+    	
+    	public triple(int c1, int c2, int timestamp) {
+    		this.c1 = c1;
+    		this.c2 = c2;
+    		this.timestamp = timestamp;
+    	}
+    }
 }
