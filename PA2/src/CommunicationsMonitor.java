@@ -48,9 +48,9 @@ public class CommunicationsMonitor {
      */
     public void createGraph() {
     	triples = new triple[communications.size()];
-    	triples = communications.toArray(triples);
+    	communications.toArray(triples);
     	graphStarted = true; 
-    	Mergesort(triples);
+    	triples = Mergesort(triples);
     	for(int i = 0; i < triples.length; i++)
     	{
     		 if(!nodeMap.containsKey(triples[i].c1))				
@@ -61,6 +61,8 @@ public class CommunicationsMonitor {
     		 {
     			nodeMap.put(triples[i].c2, new ArrayList<ComputerNode>());  //creates associated list for node for c2 if it doesn't exist
     		 }
+    		 
+    		 
     		 
     		 Iterator<ComputerNode> iter1 = nodeMap.get(triples[i].c1).iterator();
     		 Iterator<ComputerNode> iter2 = nodeMap.get(triples[i].c2).iterator();
@@ -82,10 +84,12 @@ public class CommunicationsMonitor {
     				 Node1 = temp1;
     				 break;
     			 }
-    			 if(!iter1.hasNext())
-    				 nodeMap.get(triples[i].c1).add(new ComputerNode(triples[i].c1, triples[i].timestamp));   //create them
-    		    	
+    			
     		 } 
+    		 
+    		 if(!iter1.hasNext())
+				 nodeMap.get(triples[i].c1).add(new ComputerNode(triples[i].c1, triples[i].timestamp));   //create them
+		    	
     		   	
     		 while(iter2.hasNext())  //this while loop searches to see if Node2 exists and ensures Node2 is the object we want to modify
     		 {						 //it also appends the reference to the node to the list
@@ -96,9 +100,11 @@ public class CommunicationsMonitor {
     				 Node2 = temp2;
     				 break;
     			 }
-    			 if(!iter2.hasNext())
-    				 	nodeMap.get(triples[i].c2).add(new ComputerNode(triples[i].c2, triples[i].timestamp));  //create them	    	
     		 } 
+    		 
+    		 if(!iter2.hasNext())
+				 	nodeMap.get(triples[i].c2).add(new ComputerNode(triples[i].c2, triples[i].timestamp));  //create them	    	
+	
     		 
     		 //AS IT STANDS WE WILL HAVE MULTIPLE REPEATED ARROWS IF TWO SAME TRIPLES ARE GIVEN.
     		 //HOWEVER, THIS WON'T CAUSE ISSUES WITH THE CODE
