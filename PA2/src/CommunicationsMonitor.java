@@ -87,8 +87,8 @@ public class CommunicationsMonitor {
     			
     		 } 
     		 
-    		 if(!iter1.hasNext())
-				 nodeMap.get(triples[i].c1).add(new ComputerNode(triples[i].c1, triples[i].timestamp));   //create them
+    
+			 nodeMap.get(triples[i].c1).add(new ComputerNode(triples[i].c1, triples[i].timestamp));   //create them
 		    	
     		   	
     		 while(iter2.hasNext())  //this while loop searches to see if Node2 exists and ensures Node2 is the object we want to modify
@@ -102,15 +102,8 @@ public class CommunicationsMonitor {
     			 }
     		 } 
     		 
-    		 if(!iter2.hasNext())
-				 	nodeMap.get(triples[i].c2).add(new ComputerNode(triples[i].c2, triples[i].timestamp));  //create them	    	
-	
-    		 
-    		 //AS IT STANDS WE WILL HAVE MULTIPLE REPEATED ARROWS IF TWO SAME TRIPLES ARE GIVEN.
-    		 //HOWEVER, THIS WON'T CAUSE ISSUES WITH THE CODE
-    		 //i also am rusty on pointers so i will figure out if this code will work when i debug thanks
-    		 // i think it works but there may be issues with the pointers
-    		 
+    	 	nodeMap.get(triples[i].c2).add(new ComputerNode(triples[i].c2, triples[i].timestamp));  //create them	    	
+	 
     		 
     		 Node1.getOutNeighbors().add(Node2);  // adding directed edges
     		 Node2.getOutNeighbors().add(Node1); // adding directed edges
@@ -307,19 +300,25 @@ public class CommunicationsMonitor {
     	coms.addCommunication(1, 3, 1);
     	coms.addCommunication(2, 3, 5);
     	coms.addCommunication(3, 5, 7);
-    	coms.addCommunication(5, 1, 2);
+    	coms.addCommunication(5, 4, 2);
     	coms.createGraph();
-    	Iterator<ComputerNode> it = coms.nodeMap.get(1).iterator();
-    	while(it.hasNext())
+    	
+    	
+    	for(int i = 1; i < 6; i++)
+    			
     	{
-    		Iterator<ComputerNode> its = it.next().getOutNeighbors().iterator();
-    		while(its.hasNext())
-    		{
-    			ComputerNode tempi = its.next();
-    			System.out.println("Node " + tempi.getID() + " at " + tempi.getTimestamp());
-    		}
-    		
-    		System.out.println();
+    		Iterator<ComputerNode> it = coms.nodeMap.get(i).iterator();
+	    	while(it.hasNext())
+	    	{
+	    		Iterator<ComputerNode> its = it.next().getOutNeighbors().iterator();
+	    		while(its.hasNext())
+	    		{
+	    			ComputerNode tempi = its.next();
+	    			System.out.println("node " + i + " has neighbor Node " + tempi.getID() + " at time " + tempi.getTimestamp());
+	    		}
+	    		
+	    		System.out.println();
+	    	}
     	}
     }
     
