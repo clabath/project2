@@ -155,7 +155,7 @@ public class CommunicationsMonitor {
         else
         	throw new NoSuchElementException("That number of computer doesn't exist");
         resetGraph();
-        BFS(desiredStartNode, new ComputerNode(c2,y));
+        DFS(desiredStartNode, new ComputerNode(c2,y));
         
         return path;
         
@@ -302,13 +302,19 @@ public class CommunicationsMonitor {
     	coms.addCommunication(2, 3, 5);
     	coms.addCommunication(3, 5, 7);
     	coms.addCommunication(5, 1, 2);
-    	triple[] triples = new triple[coms.communications.size()];
-     	triples = coms.communications.toArray(triples);
-    	triples = coms.Mergesort(triples);
-    	System.out.print(triples[0].timestamp);
-    	System.out.print(triples[1].timestamp);
-    	System.out.print(triples[2].timestamp);
-    	System.out.print(triples[3].timestamp);
-    	System.out.print(triples[4].timestamp);
+    	coms.createGraph();
+    	Iterator<ComputerNode> it = coms.nodeMap.get(1).iterator();
+    	while(it.hasNext())
+    	{
+    		Iterator<ComputerNode> its = it.next().getOutNeighbors().iterator();
+    		while(its.hasNext())
+    		{
+    			ComputerNode tempi = its.next();
+    			System.out.println("Node " + tempi.getID() + " at " + tempi.getTimestamp());
+    		}
+    		
+    		System.out.println();
+    	}
     }
+    
 }
