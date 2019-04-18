@@ -3,6 +3,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.ArrayList;
+import java.util.Arrays;
 /**
  * The CommunicationsMonitor class represents the graph G
  * built to answer infection queries.
@@ -46,6 +47,8 @@ public class CommunicationsMonitor {
      * Constructs the data structure as specified in the Section 2. This method should run in O(n + m log m) time.
      */
     public void createGraph() {
+    	triples = new triple[communications.size()];
+    	triples = communications.toArray(triples);
     	graphStarted = true; 
     	Mergesort(triples);
     	for(int i = 0; i < triples.length; i++)
@@ -191,13 +194,22 @@ public class CommunicationsMonitor {
     	if (n == 1) {
     		return triples;
     	}
-    	triple[] left = new triple[n/2 - 1];
-    	triple[] right = new triple[n/2];
-    	for(int i = 0; i < n/2; i++) {
-    		left[i] = triples[i];
+    	triple[] left = new triple[n/2];
+    	triple[] right;
+    	if(n % 2 == 0) {
+    		right = new triple[n/2];
+    	} else {
+    		right = new triple[n/2 + 1];
     	}
+    	int place = 0;
+    	for(int i = 0; i < n/2; i++) {
+    		left[place] = triples[i];
+    		place++;
+    	}
+    	place = 0;
     	for(int i = n/2; i < n; i++) {
-    		right[i] = triples[i];
+    		right[place] = triples[i];
+    		place++;
     	}
     	triples = Merge(Mergesort(left), Mergesort(right));
     	return triples;
@@ -216,18 +228,18 @@ public class CommunicationsMonitor {
     			i++;
     			place++;
     		} else {
-    			merged[place] = right[i];
+    			merged[place] = right[j];
     			j++;
     			place++;
     		}
     	}
     	if(i>=p) {
-    		for(int k=j; k < q-1;k++){
+    		for(int k=j; k < q;k++){
     			merged[place] = right[k];
     			place++;
     		}
     	} else {
-    		for(int k=i; k < p-1; k++) {
+    		for(int k=i; k < p; k++) {
     			merged[place] = left[k];
     			place++;
     		}
@@ -245,5 +257,23 @@ public class CommunicationsMonitor {
     		this.c2 = c2;
     		this.timestamp = timestamp;
     	}
+    }
+    
+    public static void main(String args[]) {
+    	CommunicationsMonitor coms = new CommunicationsMonitor();
+    	coms.addCommunication(1, 2, 5);
+    	coms.addCommunication(1, 3, 1);
+    	coms.addCommunication(2, 3, 5);
+    	coms.addCommunication(3, 5, 7);
+    	coms.addCommunication(5, 1, 2);
+    	triple[] triples = new triple[coms.communications.size()];
+     	triples = coms.communications.toArray(triples);
+    	triples = coms.Mergesort(triples);
+    	System.out.print(triples[0].timestamp);
+    	System.out.print(triples[1].timestamp);
+    	System.out.print(triples[2].timestamp);
+    	System.out.print(triples[3].timestamp);
+    	System.out.print(triples[4].timestamp);
+    	
     }
 }
