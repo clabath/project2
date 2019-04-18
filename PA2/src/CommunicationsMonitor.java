@@ -151,6 +151,7 @@ public class CommunicationsMonitor {
         }
         else
         	throw new NoSuchElementException("That number of computer doesn't exist");
+        resetGraph();
         BFS(desiredStartNode, new ComputerNode(c2,y));
         
         return path;
@@ -179,6 +180,29 @@ public class CommunicationsMonitor {
         return nodeMap.get(c);
     }
     
+    public boolean DFS(ComputerNode Node1, ComputerNode desiredNodeAtTime)
+    {
+    	ComputerNode nextNode;
+    	Node1.visitNode();
+    	if(Node1.isSameComputerAndBefore(desiredNodeAtTime))
+    		return true;
+    	else
+    	{
+    		Iterator<ComputerNode> iterator1 = Node1.getOutNeighbors().iterator();
+	    	while(iterator1.hasNext())
+	    	{
+	    		nextNode = iterator1.next();
+	    		if(nextNode.getColor() == 0)
+	    		{
+	    			if(DFS(iterator1.next(), desiredNodeAtTime));
+	    				return true;
+	    		}
+	    	}
+	    	
+	    	return false;
+    	}
+    	
+    }
     public boolean BFS(ComputerNode Node1, ComputerNode desiredNodeAtTime)
     {
     	Iterator<ComputerNode> iterator1 = Node1.getOutNeighbors().iterator();
@@ -194,6 +218,18 @@ public class CommunicationsMonitor {
     		this.c1 = c1;
     		this.c2 = c2;
     		this.timestamp = timestamp;
+    	}
+    }
+    
+    private void resetGraph()
+    {
+    	for(int i = 1;  i < nodeMap.size() + 1; i ++)
+    	{
+    		Iterator<ComputerNode> itER = nodeMap.get(i).iterator();
+    		while(itER.hasNext())
+    		{
+    			itER.next().resetColor();;
+    		}
     	}
     }
 }
