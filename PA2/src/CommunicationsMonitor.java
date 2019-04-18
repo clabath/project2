@@ -47,7 +47,7 @@ public class CommunicationsMonitor {
      */
     public void createGraph() {
     	graphStarted = true; 
-    	//sort triples in triples[]
+    	Mergesort(triples);
     	for(int i = 0; i < triples.length; i++)
     	{
     		 if(!nodeMap.containsKey(triples[i].c1))				
@@ -185,6 +185,56 @@ public class CommunicationsMonitor {
     	Iterator<ComputerNode> iterator2 = Node1.getOutNeighbors().iterator(); 
     	return false;
     }
+    
+    public triple[] Mergesort(triple[] triples) {
+    	int n = triples.length;
+    	if (n == 1) {
+    		return triples;
+    	}
+    	triple[] left = new triple[n/2 - 1];
+    	triple[] right = new triple[n/2];
+    	for(int i = 0; i < n/2; i++) {
+    		left[i] = triples[i];
+    	}
+    	for(int i = n/2; i < n; i++) {
+    		right[i] = triples[i];
+    	}
+    	triples = Merge(Mergesort(left), Mergesort(right));
+    	return triples;
+    }
+    
+    public triple[] Merge(triple[] left, triple[] right) {
+    	int p = left.length;
+    	int q = right.length;
+    	triple[] merged = new triple[p+q];
+    	int place = 0;
+    	int i = 0;
+    	int j = 0;
+    	while(i < p && j < q) {
+    		if(left[i].timestamp <= right[j].timestamp) {
+    			merged[place] = left[i];
+    			i++;
+    			place++;
+    		} else {
+    			merged[place] = right[i];
+    			j++;
+    			place++;
+    		}
+    	}
+    	if(i>=p) {
+    		for(int k=j; k < q-1;k++){
+    			merged[place] = right[k];
+    			place++;
+    		}
+    	} else {
+    		for(int k=i; k < p-1; k++) {
+    			merged[place] = left[k];
+    			place++;
+    		}
+    	}
+    	return merged;
+    }
+    
     public class triple {
     	public int c1;
     	public int c2;
