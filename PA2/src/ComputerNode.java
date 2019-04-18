@@ -5,7 +5,7 @@ import java.util.List;
  *
  * @author Kyle Bowden
  * @author Cassandra Labath
- * @author Kyle Trom
+ * @author dirty thicc
  */
 public class ComputerNode {
 

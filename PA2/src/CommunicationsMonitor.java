@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 /**
@@ -7,16 +8,19 @@ import java.util.ArrayList;
  *
  * @author Kyle Bowden
  * @author Cassandra Labath
- * @author Kyle Trom
+ * @author dirty thicc
  */
 public class CommunicationsMonitor {
 
-	HashMap<Integer, List<ComputerNode> > nodeMap = new HashMap<>(); 
+	HashMap<Integer, List<ComputerNode> > nodeMap = new HashMap<Integer, List<ComputerNode>>(); 
 	ArrayList<triple> communications = new ArrayList<>();
+	triple[] triples;
+	boolean graphStarted; //variable indicating that creategraph has begun
     /**
      * Constructor with no parameters
      */
     public CommunicationsMonitor() {
+    	graphStarted = false;
     	
     }
 
@@ -30,13 +34,86 @@ public class CommunicationsMonitor {
      * @param timestamp Time the communication took place.
      */
     public void addCommunication(int c1, int c2, int timestamp){
-    	
+    	if(!graphStarted)
+    	{
+    		communications.add(new triple(c1, c2, timestamp));
+    		
+    	}
     }
 
     /**
      * Constructs the data structure as specified in the Section 2. This method should run in O(n + m log m) time.
      */
     public void createGraph() {
+    	graphStarted = true; 
+    	//sort triples in triples[]
+    	for(int i = 0; i < triples.length; i++)
+    	{
+    		 if(!nodeMap.containsKey(triples[i].c1))				
+    		 {
+    			nodeMap.put(triples[i].c1, new ArrayList<ComputerNode>()); // creates associated list for node for c1 if it doesn't exist
+    		 }
+    		 if(!nodeMap.containsKey(triples[i].c2))			
+    		 {
+    			nodeMap.put(triples[i].c2, new ArrayList<ComputerNode>());  //creates associated list for node for c2 if it doesn't exist
+    		 }
+    		 
+    		 Iterator<ComputerNode> iter1 = nodeMap.get(triples[i].c1).iterator();
+    		 Iterator<ComputerNode> iter2 = nodeMap.get(triples[i].c2).iterator();
+    	    	
+    		 ComputerNode Node1 = new ComputerNode(triples[i].c1, triples[i].timestamp);
+    		 ComputerNode temp1 = null;
+    		 ComputerNode Node1follow = null; //follows Node1 in the iterator, also determining if Node1 is the first in c1's list
+    		 ComputerNode Node2 = new ComputerNode(triples[i].c2, triples[i].timestamp);
+    		 ComputerNode Node2follow = null;  //follows Node2 in the iterator, also determining if Node2 is the first in c2's list
+    		 ComputerNode temp2 = null;
+       	  	
+    		 
+    		 while(iter1.hasNext()) //this while loop searches to see if Node1 exists and ensures Node1 is the object we want to modify
+    		 {						//it also appends the reference to the node to the list
+    			 
+    			 temp1 = iter1.next();
+    			 if(Node1.getID() == temp1.getID() && Node1.getTimestamp() == temp1.getTimestamp())
+    			 {
+    				 Node1 = temp1;
+    				 break;
+    			 }
+    			 if(!iter1.hasNext())
+    				 nodeMap.get(triples[i].c1).add(new ComputerNode(triples[i].c1, triples[i].timestamp));   //create them
+    		    	
+    		 } 
+    		   	
+    		 while(iter2.hasNext())  //this while loop searches to see if Node2 exists and ensures Node2 is the object we want to modify
+    		 {						 //it also appends the reference to the node to the list
+    			 Node1follow = temp2;
+    			 temp2 = iter2.next();
+    			 if(Node2.getID() == temp2.getID() && Node2.getTimestamp() == temp2.getTimestamp())
+    			 {
+    				 Node2 = temp2;
+    				 break;
+    			 }
+    			 if(!iter2.hasNext())
+    				 	nodeMap.get(triples[i].c2).add(new ComputerNode(triples[i].c2, triples[i].timestamp));  //create them	    	
+    		 } 
+    		 
+    		 //AS IT STANDS WE WILL HAVE MULTIPLE REPEATED ARROWS IF TWO SAME TRIPLES ARE GIVEN.
+    		 //HOWEVER, THIS WON'T CAUSE ISSUES WITH THE CODE
+    		 //i also am rusty on pointers so i will figure out if this code will work when i debug thanks
+    		 
+    		 
+    		 Node1.getOutNeighbors().add(Node2);  // adding directed edges
+    		 Node2.getOutNeighbors().add(Node1); // adding directed edges
+    		 
+    		 
+    		 	
+    		 
+       		 
+    		 
+    		 
+    		 	
+    		 
+    		 
+    	}
     }
 
     /**
