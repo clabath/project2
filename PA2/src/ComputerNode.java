@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class ComputerNode {
 		id = ID;
 		time = timestamp;
 		color = 0;
-
+		neighbors = new ArrayList<ComputerNode>();
 	}
 	
     /**
