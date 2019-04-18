@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.ArrayList;
 /**
  * The CommunicationsMonitor class represents the graph G
@@ -71,9 +72,9 @@ public class CommunicationsMonitor {
     		 
     		 while(iter1.hasNext()) //this while loop searches to see if Node1 exists and ensures Node1 is the object we want to modify
     		 {						//it also appends the reference to the node to the list
-    			 
+    			 Node1follow = temp1;
     			 temp1 = iter1.next();
-    			 if(Node1.getID() == temp1.getID() && Node1.getTimestamp() == temp1.getTimestamp())
+    			 if(Node1.equals(temp1))
     			 {
     				 Node1 = temp1;
     				 break;
@@ -85,9 +86,9 @@ public class CommunicationsMonitor {
     		   	
     		 while(iter2.hasNext())  //this while loop searches to see if Node2 exists and ensures Node2 is the object we want to modify
     		 {						 //it also appends the reference to the node to the list
-    			 Node1follow = temp2;
+    			 Node2follow = temp2;
     			 temp2 = iter2.next();
-    			 if(Node2.getID() == temp2.getID() && Node2.getTimestamp() == temp2.getTimestamp())
+    			 if(Node2.equals(temp2))
     			 {
     				 Node2 = temp2;
     				 break;
@@ -99,19 +100,16 @@ public class CommunicationsMonitor {
     		 //AS IT STANDS WE WILL HAVE MULTIPLE REPEATED ARROWS IF TWO SAME TRIPLES ARE GIVEN.
     		 //HOWEVER, THIS WON'T CAUSE ISSUES WITH THE CODE
     		 //i also am rusty on pointers so i will figure out if this code will work when i debug thanks
+    		 // i think it works but there may be issues with the pointers
     		 
     		 
     		 Node1.getOutNeighbors().add(Node2);  // adding directed edges
     		 Node2.getOutNeighbors().add(Node1); // adding directed edges
     		 
-    		 
-    		 	
-    		 
-       		 
-    		 
-    		 
-    		 	
-    		 
+    		 if(Node1follow != null)
+    			 Node1follow.getOutNeighbors().add(Node1); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
+    		 if(Node2follow != null)
+    			 Node2follow.getOutNeighbors().add(Node2); //adding directed edge from (Cj, t) to (Cj, tk) if (Cj,t) exists
     		 
     	}
     }
@@ -135,7 +133,28 @@ public class CommunicationsMonitor {
      * @return List of the path in the graph (infection path) if one exists, null otherwise.
      */
     public List<ComputerNode> queryInfection(int c1, int c2, int x, int y) {
-        return null;
+        ComputerNode desiredStartNode = new ComputerNode(c1,x);
+        Iterator<ComputerNode> it;
+        ComputerNode tempy = null;
+        List<ComputerNode> path = null;
+        if(nodeMap.containsKey(c1))
+        {
+        	it = nodeMap.get(c1).listIterator();
+        	while(it.hasNext())
+        	{
+        		tempy = it.next();
+        		if(desiredStartNode.equals(tempy))
+        		{
+        			desiredStartNode = tempy;
+        		}
+        	}
+        }
+        else
+        	throw new NoSuchElementException("That number of computer doesn't exist");
+        BFS(desiredStartNode, new ComputerNode(c2,y));
+        
+        return path;
+        
     }
 
     /**
@@ -160,7 +179,12 @@ public class CommunicationsMonitor {
         return nodeMap.get(c);
     }
     
-    
+    public boolean BFS(ComputerNode Node1, ComputerNode desiredNodeAtTime)
+    {
+    	Iterator<ComputerNode> iterator1 = Node1.getOutNeighbors().iterator();
+    	Iterator<ComputerNode> iterator2 = Node1.getOutNeighbors().iterator(); 
+    	return false;
+    }
     public class triple {
     	public int c1;
     	public int c2;

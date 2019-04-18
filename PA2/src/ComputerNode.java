@@ -44,5 +44,26 @@ public class ComputerNode {
     public List<ComputerNode> getOutNeighbors() {
         return neighbors;
     }
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+    	if(obj == null)
+    		return false;
+    	if(!ComputerNode.class.isAssignableFrom(obj.getClass()))
+    		return false;
+    	if(this.id == ((ComputerNode)obj).id && this.time == ((ComputerNode)obj).time)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+    
+    public boolean isSameComputerAndBefore(ComputerNode other)
+    {
+    	if(this.id == other.id && this.time <= other.time)
+    		return true;
+    	return false;
+    }
 
 }
