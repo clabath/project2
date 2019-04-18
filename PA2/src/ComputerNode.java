@@ -12,10 +12,13 @@ public class ComputerNode {
 	private int id;
 	private int time;
 	private List<ComputerNode> neighbors;
+	private int color;
 	
 	public ComputerNode(int ID, int timestamp){
 		id = ID;
 		time = timestamp;
+		color = 0;
+
 	}
 	
     /**
@@ -64,6 +67,21 @@ public class ComputerNode {
     	if(this.id == other.id && this.time <= other.time)
     		return true;
     	return false;
+    }
+    
+    public void resetColor()
+    {
+    	this.color = 0;
+    }
+    
+    public void visitNode()
+    {
+    	this.color = 1; 
+    }
+    
+    public int getColor()
+    {
+    	return this.color;
     }
 
 }
