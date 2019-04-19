@@ -88,8 +88,10 @@ public class CommunicationsMonitor {
     		 } 
     		 
     
-			 nodeMap.get(triples[i].c1).add(new ComputerNode(triples[i].c1, triples[i].timestamp));   //create them
-		    	
+			 if(!iter1.hasNext())
+			 {
+				nodeMap.get(triples[i].c1).add(Node1);   //create them
+			 }
     		   	
     		 while(iter2.hasNext())  //this while loop searches to see if Node2 exists and ensures Node2 is the object we want to modify
     		 {						 //it also appends the reference to the node to the list
@@ -102,15 +104,19 @@ public class CommunicationsMonitor {
     			 }
     		 } 
     		 
-    	 	nodeMap.get(triples[i].c2).add(new ComputerNode(triples[i].c2, triples[i].timestamp));  //create them	    	
-	 
+    		 if(!iter2.hasNext())
+			 {
+				nodeMap.get(triples[i].c1).add(Node2);   //create them
+			 }
     		 
     		 Node1.getOutNeighbors().add(Node2);  // adding directed edges
     		 Node2.getOutNeighbors().add(Node1); // adding directed edges
     		 
-    		 if(Node1follow != null)
-    			 Node1follow.getOutNeighbors().add(Node1); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
-    		 if(Node2follow != null)
+    		 if(Node1follow != null && !iter1.hasNext())
+    			 {
+    			 	Node1follow.getOutNeighbors().add(Node1); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
+    			 }
+    		 if(Node2follow != null && !iter2.hasNext())
     			 Node2follow.getOutNeighbors().add(Node2); //adding directed edge from (Cj, t) to (Cj, tk) if (Cj,t) exists
     		 
     	}
@@ -303,23 +309,22 @@ public class CommunicationsMonitor {
     	coms.addCommunication(5, 4, 2);
     	coms.createGraph();
     	
+    	coms.nodeMap.forEach((computer, list) -> {
+    		Iterator<ComputerNode> it = list.iterator();
+    		Iterator<ComputerNode> its;
+    		ComputerNode printOut;
+    		while(it.hasNext())
+    		{
+    			ComputerNode nodes = it.next();
+    			its = nodes.getOutNeighbors().iterator();
+    			while (its.hasNext())
+    			{
+    				printOut = its.next();
+    				System.out.println("Node " + nodes.getID() + " has a communication with node " + printOut.getID() + " at time " + printOut.getTimestamp());
+    			}
+    		}
+    	});
     	
-    	for(int i = 1; i < 6; i++)
-    			
-    	{
-    		Iterator<ComputerNode> it = coms.nodeMap.get(i).iterator();
-	    	while(it.hasNext())
-	    	{
-	    		Iterator<ComputerNode> its = it.next().getOutNeighbors().iterator();
-	    		while(its.hasNext())
-	    		{
-	    			ComputerNode tempi = its.next();
-	    			System.out.println("node " + i + " has neighbor Node " + tempi.getID() + " at time " + tempi.getTimestamp());
-	    		}
-	    		
-	    		System.out.println();
-	    	}
-    	}
     }
     
 }
