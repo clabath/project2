@@ -88,7 +88,7 @@ public class CommunicationsMonitor {
     		 } 
     		 
     
-			 if(!iter1.hasNext())
+			 if(!iter1.hasNext() && Node1 != temp1)
 			 {
 				nodeMap.get(triples[i].c1).add(Node1);   //create them
 			 }
@@ -104,18 +104,16 @@ public class CommunicationsMonitor {
     			 }
     		 } 
     		 
-    		 if(!iter2.hasNext())
+    		 if(!iter2.hasNext() && Node2 != temp2)
 			 {
-				nodeMap.get(triples[i].c1).add(Node2);   //create them
+				nodeMap.get(triples[i].c2).add(Node2);   //create them
 			 }
     		 
     		 Node1.getOutNeighbors().add(Node2);  // adding directed edges
     		 Node2.getOutNeighbors().add(Node1); // adding directed edges
     		 
     		 if(Node1follow != null && !iter1.hasNext())
-    			 {
-    			 	Node1follow.getOutNeighbors().add(Node1); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
-    			 }
+    			 Node1follow.getOutNeighbors().add(Node1); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
     		 if(Node2follow != null && !iter2.hasNext())
     			 Node2follow.getOutNeighbors().add(Node2); //adding directed edge from (Cj, t) to (Cj, tk) if (Cj,t) exists
     		 
@@ -312,16 +310,16 @@ public class CommunicationsMonitor {
     	coms.nodeMap.forEach((computer, list) -> {
     		Iterator<ComputerNode> it = list.iterator();
     		Iterator<ComputerNode> its;
-    		ComputerNode printOut;
     		while(it.hasNext())
     		{
     			ComputerNode nodes = it.next();
     			its = nodes.getOutNeighbors().iterator();
-    			while (its.hasNext())
+    			while(its.hasNext())
     			{
-    				printOut = its.next();
-    				System.out.println("Node " + nodes.getID() + " has a communication with node " + printOut.getID() + " at time " + printOut.getTimestamp());
+    				ComputerNode tempi = its.next();
+    				System.out.println("Computer " + computer + " has a communication with computer " + tempi.getID() + " at time " + tempi.getTimestamp());
     			}
+    					
     		}
     	});
     	
