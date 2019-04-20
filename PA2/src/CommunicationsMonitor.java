@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 /**
@@ -27,7 +28,9 @@ public class CommunicationsMonitor {
     }
 
     /**
-     * Takes as input two integers c1, c2, and a timestamp. This triple represents the fact that the computers with IDs
+     * Takes as input two integers c1, c2, and 
+     * 
+     * a timestamp. This triple represents the fact that the computers with IDs
      * c1 and c2 have communicated at the given timestamp. This method should run in O(1) time. Any invocation of this
      * method after createGraph() is called will be ignored.
      *
@@ -69,15 +72,12 @@ public class CommunicationsMonitor {
     	    	
     		 ComputerNode Node1 = new ComputerNode(triples[i].c1, triples[i].timestamp);
     		 ComputerNode temp1 = null;
-    		 ComputerNode Node1follow = null; //follows Node1 in the iterator, also determining if Node1 is the first in c1's list
     		 ComputerNode Node2 = new ComputerNode(triples[i].c2, triples[i].timestamp);
-    		 ComputerNode Node2follow = null;  //follows Node2 in the iterator, also determining if Node2 is the first in c2's list
     		 ComputerNode temp2 = null;
        	  	
     		 
     		 while(iter1.hasNext()) //this while loop searches to see if Node1 exists and ensures Node1 is the object we want to modify
     		 {						//it also appends the reference to the node to the list
-    			 Node1follow = temp1;
     			 temp1 = iter1.next();
     			 if(Node1.equals(temp1))
     			 {
@@ -87,6 +87,10 @@ public class CommunicationsMonitor {
     			
     		 } 
     		 
+    		 if(temp1 != null && !iter1.hasNext())
+    			 temp1.getOutNeighbors().add(Node1); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
+  
+    		 
     
 			 if(!iter1.hasNext() && Node1 != temp1)
 			 {
@@ -95,7 +99,6 @@ public class CommunicationsMonitor {
     		   	
     		 while(iter2.hasNext())  //this while loop searches to see if Node2 exists and ensures Node2 is the object we want to modify
     		 {						 //it also appends the reference to the node to the list
-    			 Node2follow = temp2;
     			 temp2 = iter2.next();
     			 if(Node2.equals(temp2))
     			 {
@@ -104,19 +107,19 @@ public class CommunicationsMonitor {
     			 }
     		 } 
     		 
+    		 if(temp2 != null && !iter2.hasNext())	
+    			 temp2.getOutNeighbors().add(Node2); //adding directed edge from (Cj, t) to (Cj, tk) if (Cj,t) exists
+    		 
+    	
     		 if(!iter2.hasNext() && Node2 != temp2)
 			 {
 				nodeMap.get(triples[i].c2).add(Node2);   //create them
 			 }
     		 
-    		 Node1.getOutNeighbors().add(Node2);  // adding directed edges
+
+    	  	 Node1.getOutNeighbors().add(Node2);  // adding directed edges
     		 Node2.getOutNeighbors().add(Node1); // adding directed edges
-    		 
-    		 if(Node1follow != null && !iter1.hasNext())
-    			 Node1follow.getOutNeighbors().add(Node1); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
-    		 if(Node2follow != null && !iter2.hasNext())
-    			 Node2follow.getOutNeighbors().add(Node2); //adding directed edge from (Cj, t) to (Cj, tk) if (Cj,t) exists
-    		 
+    	
     	}
     }
 
@@ -142,24 +145,27 @@ public class CommunicationsMonitor {
         ComputerNode desiredStartNode = new ComputerNode(c1,x);
         Iterator<ComputerNode> it;
         ComputerNode tempy = null;
-        List<ComputerNode> path = null;
+        ArrayList<ComputerNode> path = null;
         if(nodeMap.containsKey(c1))
         {
         	it = nodeMap.get(c1).listIterator();
         	while(it.hasNext())
         	{
         		tempy = it.next();
-        		if(desiredStartNode.equals(tempy))
+        		if(desiredStartNode.isSameComputerAndBefore(tempy))
         		{
         			desiredStartNode = tempy;
+        			break;
         		}
         	}
         }
         else
         	throw new NoSuchElementException("That number of computer doesn't exist");
         resetGraph();
-        DFS(desiredStartNode, new ComputerNode(c2,y));
-        
+        path = new ArrayList<ComputerNode>();
+        DFS(desiredStartNode, new ComputerNode(c2,y), path);
+        if(!path.isEmpty())
+        		path.add(desiredStartNode);
         return path;
         
     }
@@ -177,6 +183,7 @@ public class CommunicationsMonitor {
     }
 
     /**
+     * 
      * Returns the list of ComputerNode objects associated with computer c by performing a lookup in the mapping.
      *
      * @param c ID of computer
@@ -186,12 +193,15 @@ public class CommunicationsMonitor {
         return nodeMap.get(c);
     }
     
-    public boolean DFS(ComputerNode Node1, ComputerNode desiredNodeAtTime)
+    public boolean DFS(ComputerNode Node1, ComputerNode desiredNodeAtTime, ArrayList<ComputerNode> nodePath)
     {
-    	ComputerNode nextNode;
+
+    	ComputerNode nextNode = null;
     	Node1.visitNode();
     	if(Node1.isSameComputerAndBefore(desiredNodeAtTime))
-    		return true;
+    		{
+    			return true;
+    		}
     	else
     	{
     		Iterator<ComputerNode> iterator1 = Node1.getOutNeighbors().iterator();
@@ -200,15 +210,18 @@ public class CommunicationsMonitor {
 	    		nextNode = iterator1.next();
 	    		if(nextNode.getColor() == 0)
 	    		{
-	    			if(DFS(iterator1.next(), desiredNodeAtTime));
-	    				return true;
+	    			if(DFS(nextNode, desiredNodeAtTime, nodePath));
+	    				{
+	    					nodePath.add(nextNode);
+	    					return true;
+	    				}
 	    		}
 	    	}
-	    	
-	    	return false;
     	}
     	
+    	return false;    
     }
+  
     public boolean BFS(ComputerNode Node1, ComputerNode desiredNodeAtTime)
     {
     	Iterator<ComputerNode> iterator1 = Node1.getOutNeighbors().iterator();
@@ -300,13 +313,13 @@ public class CommunicationsMonitor {
     
     public static void main(String args[]) {
     	CommunicationsMonitor coms = new CommunicationsMonitor();
-    	coms.addCommunication(1, 2, 5);
-    	coms.addCommunication(1, 3, 1);
-    	coms.addCommunication(2, 3, 5);
-    	coms.addCommunication(3, 5, 7);
-    	coms.addCommunication(5, 4, 2);
+    	coms.addCommunication(4, 3, 8);
+    	coms.addCommunication(2, 4, 8);
+    	coms.addCommunication(1, 2, 4);
+    	coms.addCommunication(4, 1, 12);
     	coms.createGraph();
     	
+    	/*
     	coms.nodeMap.forEach((computer, list) -> {
     		Iterator<ComputerNode> it = list.iterator();
     		Iterator<ComputerNode> its;
@@ -317,12 +330,76 @@ public class CommunicationsMonitor {
     			while(its.hasNext())
     			{
     				ComputerNode tempi = its.next();
+
     				System.out.println("Computer " + computer + " has a communication with computer " + tempi.getID() + " at time " + tempi.getTimestamp());
     			}
     					
     		}
+    		
+    		
     	});
     	
+    	*/
+    	
+    	Scanner scan = new Scanner(System.in);
+    	int c1, t1, c2, t2;
+    	System.out.println("gimme the infected computer's number");
+    	c1 = scan.nextInt();
+    	System.out.println("gimme the infected computer's time of infection");
+    	t1 = scan.nextInt();
+    	System.out.println("gimme the computer's number that you want to check if infected");
+    	c2 = scan.nextInt();
+    	System.out.println("gimme the time you want to check if it's infected by");
+    	t2 = scan.nextInt();
+    	System.out.println();
+    	System.out.println("lit fam give me a minute while i find if there's a path");
+    	try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	System.out.println("...");
+      	try {
+    			Thread.sleep(1000);
+    		} catch (InterruptedException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+      	System.out.println("...");
+      	try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      	System.out.println("...");
+    	System.out.println();
+    	
+    	try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	List<ComputerNode> list = coms.queryInfection(c1,c2,t1,t2);
+    	Iterator<ComputerNode> it1 = list.iterator();
+    	ComputerNode temp;
+    	{
+    		System.out.println("One path is: ");
+    		while (it1.hasNext())
+    		{
+    			temp = it1.next();
+    			
+    			System.out.print("Computer " + temp.getID() + " at time " +temp.getTimestamp());
+    			if(it1.hasNext())
+    			{
+    				System.out.print(" <-- ");
+    			}
+    		}
+    	}
+		System.out.println();
+		scan.close();
     }
     
 }
