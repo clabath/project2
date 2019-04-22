@@ -231,13 +231,6 @@ public class CommunicationsMonitor {
     	
     	return false;    
     }
-  
-    public boolean BFS(ComputerNode Node1, ComputerNode desiredNodeAtTime)
-    {
-    	Iterator<ComputerNode> iterator1 = Node1.getOutNeighbors().iterator();
-    	Iterator<ComputerNode> iterator2 = Node1.getOutNeighbors().iterator(); 
-    	return false;
-    }
     
     public triple[] Mergesort(triple[] triples) {
     	int n = triples.length;
@@ -323,10 +316,11 @@ public class CommunicationsMonitor {
     
     public static void main(String args[]) {
     	CommunicationsMonitor coms = new CommunicationsMonitor();
-    	coms.addCommunication(1, 2, 4);
-    	coms.addCommunication(2, 4, 8);
-    	coms.addCommunication(3, 4, 8);
-    	coms.addCommunication(1, 4, 12);
+ 
+    	
+    	for(int i = 1; i < 500; i++) {
+    		coms.addCommunication(i, i+1, i);
+    	}
     	coms.createGraph();
     	
     	
@@ -363,35 +357,11 @@ public class CommunicationsMonitor {
     	t2 = scan.nextInt();
     	System.out.println();
     	System.out.println("lit fam give me a minute while i find if there's a path");
-    	try {
-    		Thread.sleep(1000);
-    	} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     	System.out.println("...");
-      	try {
-    			Thread.sleep(1000);
-    		} catch (InterruptedException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
       	System.out.println("...");
-      	try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
       	System.out.println("...");
     	System.out.println();
     	
-    	try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     	List<ComputerNode> list = coms.queryInfection(c1,c2,t1,t2);
     	Iterator<ComputerNode> it1 = list.iterator();
     	ComputerNode temp;
@@ -404,7 +374,7 @@ public class CommunicationsMonitor {
     			System.out.print("Computer " + temp.getID() + " at time " +temp.getTimestamp());
     			if(it1.hasNext())
     			{
-    				System.out.print(" --> ");
+    				System.out.println("-->");
     			}
     		}
     	}
