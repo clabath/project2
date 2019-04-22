@@ -164,7 +164,7 @@ public class CommunicationsMonitor {
         resetGraph();
         path = new ArrayList<ComputerNode>();
         DFS(desiredStartNode, new ComputerNode(c2,y), path);
-        if(!path.isEmpty())
+        if(!path.isEmpty() || c1 == c2)
         		path.add(desiredStartNode);
         return path;
         
