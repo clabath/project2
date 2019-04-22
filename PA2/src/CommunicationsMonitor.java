@@ -210,7 +210,8 @@ public class CommunicationsMonitor {
 	    		nextNode = iterator1.next();
 	    		if(nextNode.getColor() == 0)
 	    		{
-	    			if(DFS(nextNode, desiredNodeAtTime, nodePath));
+	    			
+	    			if(DFS(nextNode, desiredNodeAtTime, nodePath))
 	    				{
 	    					nodePath.add(nextNode);
 	    					return true;
@@ -313,13 +314,13 @@ public class CommunicationsMonitor {
     
     public static void main(String args[]) {
     	CommunicationsMonitor coms = new CommunicationsMonitor();
-    	coms.addCommunication(4, 3, 8);
-    	coms.addCommunication(2, 4, 8);
     	coms.addCommunication(1, 2, 4);
-    	coms.addCommunication(4, 1, 12);
+    	coms.addCommunication(2, 4, 8);
+    	coms.addCommunication(3, 4, 8);
+    	coms.addCommunication(1, 4, 12);
     	coms.createGraph();
     	
-    	/*
+    	
     	coms.nodeMap.forEach((computer, list) -> {
     		Iterator<ComputerNode> it = list.iterator();
     		Iterator<ComputerNode> its;
@@ -339,7 +340,7 @@ public class CommunicationsMonitor {
     		
     	});
     	
-    	*/
+    	
     	
     	Scanner scan = new Scanner(System.in);
     	int c1, t1, c2, t2;
@@ -353,35 +354,35 @@ public class CommunicationsMonitor {
     	t2 = scan.nextInt();
     	System.out.println();
     	System.out.println("lit fam give me a minute while i find if there's a path");
-    	try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	System.out.println("...");
-      	try {
-    			Thread.sleep(1000);
-    		} catch (InterruptedException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
-      	System.out.println("...");
-      	try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-      	System.out.println("...");
-    	System.out.println();
-    	
-    	try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//    	try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//    	System.out.println("...");
+//      	try {
+//    			Thread.sleep(1000);
+//    		} catch (InterruptedException e) {
+//    			// TODO Auto-generated catch block
+//    			e.printStackTrace();
+//    		}
+//      	System.out.println("...");
+//      	try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//      	System.out.println("...");
+//    	System.out.println();
+//    	
+//    	try {
+//			Thread.sleep(2000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
     	List<ComputerNode> list = coms.queryInfection(c1,c2,t1,t2);
     	Iterator<ComputerNode> it1 = list.iterator();
     	ComputerNode temp;
