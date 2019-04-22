@@ -304,14 +304,16 @@ public class CommunicationsMonitor {
 
     private void resetGraph()
     {
-    	for(int i = 1;  i < nodeMap.size() + 1; i ++)
-    	{
-    		Iterator<ComputerNode> itER = nodeMap.get(i).iterator();
-    		while(itER.hasNext())
+    	
+    	nodeMap.forEach((computer, list) -> {
+    		Iterator<ComputerNode> it = list.iterator();
+    		while(it.hasNext())
     		{
-    			itER.next().resetColor();;
+    			it.next().resetColor();
     		}
-    	}
+    		
+    		
+    	});
     }
     
     public static void main(String args[]) {
