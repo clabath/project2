@@ -311,22 +311,24 @@ public class CommunicationsMonitor {
 
     private void resetGraph()
     {
-    	for(int i = 1;  i < nodeMap.size() + 1; i ++)
-    	{
-    		Iterator<ComputerNode> itER = nodeMap.get(i).iterator();
-    		while(itER.hasNext())
+    	
+    	nodeMap.forEach((computer, list) -> {
+    		Iterator<ComputerNode> it = list.iterator();
+    		while(it.hasNext())
     		{
-    			itER.next().resetColor();;
+    			it.next().resetColor();
     		}
-    	}
+    		
+    		
+    	});
     }
     
     public static void main(String args[]) {
     	CommunicationsMonitor coms = new CommunicationsMonitor();
-    	coms.addCommunication(1, 2, 4);
+    coms.addCommunication(1, 2, 4);
     	coms.addCommunication(2, 4, 8);
     	coms.addCommunication(3, 4, 8);
-    	coms.addCommunication(1, 4, 12);
+    	coms.addCommunication(1, 4, 12);;
     	coms.createGraph();
     	
     	
