@@ -166,7 +166,10 @@ public class CommunicationsMonitor {
         DFS(desiredStartNode, new ComputerNode(c2,y), path);
         if(!path.isEmpty() || c1 == c2)
         		path.add(desiredStartNode);
-        path = tempPathSwap(path);            //temporary fix for backwards infection path
+        path = tempPathSwap(path); 
+        if(path.isEmpty()) {
+        	path = null; //temporary fix for backwards infection path
+        }
         return path;
         
     }
@@ -320,7 +323,7 @@ public class CommunicationsMonitor {
     	CommunicationsMonitor coms = new CommunicationsMonitor();
  
     	
-    	for(int i = 1; i < 500; i++) {
+    	for(int i = 1; i < 5000; i++) {
     		coms.addCommunication(i, i+1, i);
     	}
     	coms.createGraph();
