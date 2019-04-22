@@ -363,35 +363,35 @@ public class CommunicationsMonitor {
     	t2 = scan.nextInt();
     	System.out.println();
     	System.out.println("lit fam give me a minute while i find if there's a path");
-//    	try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	System.out.println("...");
-//      	try {
-//    			Thread.sleep(1000);
-//    		} catch (InterruptedException e) {
-//    			// TODO Auto-generated catch block
-//    			e.printStackTrace();
-//    		}
-//      	System.out.println("...");
-//      	try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//      	System.out.println("...");
-//    	System.out.println();
-//    	
-//    	try {
-//			Thread.sleep(2000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+    	try {
+    		Thread.sleep(1000);
+    	} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	System.out.println("...");
+      	try {
+    			Thread.sleep(1000);
+    		} catch (InterruptedException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+      	System.out.println("...");
+      	try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      	System.out.println("...");
+    	System.out.println();
+    	
+    	try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	List<ComputerNode> list = coms.queryInfection(c1,c2,t1,t2);
     	Iterator<ComputerNode> it1 = list.iterator();
     	ComputerNode temp;
