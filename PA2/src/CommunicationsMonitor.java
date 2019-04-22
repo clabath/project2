@@ -166,8 +166,17 @@ public class CommunicationsMonitor {
         DFS(desiredStartNode, new ComputerNode(c2,y), path);
         if(!path.isEmpty() || c1 == c2)
         		path.add(desiredStartNode);
+        path = tempPathSwap(path);            //temporary fix for backwards infection path
         return path;
         
+    }
+    
+    public ArrayList<ComputerNode> tempPathSwap( ArrayList<ComputerNode> path){
+    	 ArrayList<ComputerNode> swapped = new ArrayList<ComputerNode>();
+    	 for(int i = path.size() - 1; i >= 0; i--) {
+    		 swapped.add(path.get(i));
+    	 }
+    	 return swapped;
     }
 
     /**
@@ -395,7 +404,7 @@ public class CommunicationsMonitor {
     			System.out.print("Computer " + temp.getID() + " at time " +temp.getTimestamp());
     			if(it1.hasNext())
     			{
-    				System.out.print(" <-- ");
+    				System.out.print(" --> ");
     			}
     		}
     	}
