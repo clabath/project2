@@ -11,7 +11,7 @@ import java.util.Arrays;
  *
  * @author Kyle Bowden
  * @author Cassandra Labath
- * @author dirty thicc
+ * @author Kyle Trom
  */
 public class CommunicationsMonitor {
 
@@ -323,6 +323,7 @@ public class CommunicationsMonitor {
     	CommunicationsMonitor coms = new CommunicationsMonitor();
  
     	
+
     	for(int i = 1; i < 5000; i++) {
     		coms.addCommunication(i, i+1, i);
     	}
