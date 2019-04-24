@@ -78,7 +78,7 @@ public class CommunicationsMonitor {
     	}
     }
     
-    public void insertNodeToList(List<ComputerNode> list, ComputerNode node)
+    private void insertNodeToList(List<ComputerNode> list, ComputerNode node)
     {
     	ComputerNode lastNode;
     	 if(!list.isEmpty()){
@@ -89,7 +89,7 @@ public class CommunicationsMonitor {
  				lastNode.getOutNeighbors().add(node); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
  				list.add(node);
  			}
- 		 }
+ 		 }	
  		 else
  			 list.add(node);
  		
