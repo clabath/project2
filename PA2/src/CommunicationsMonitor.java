@@ -56,7 +56,7 @@ public class CommunicationsMonitor {
     	triples = Mergesort(triples);
     	for(int i = 0; i < triples.length; i++)
     	{
-    		 if(!nodeMap.containsKey(triples[i].c1))				
+    		 if(!nodeMap.containsKey(triples [i].c1))				
     		 {
     			nodeMap.put(triples[i].c1, new ArrayList<ComputerNode>()); // creates associated list for node for c1 if it doesn't exist
     		 }
@@ -70,19 +70,19 @@ public class CommunicationsMonitor {
     		 List<ComputerNode> list2 = nodeMap.get(triples[i].c2);
     		 ComputerNode Node1 = new ComputerNode(triples[i].c1, triples[i].timestamp);
     		 ComputerNode Node2 = new ComputerNode(triples[i].c2, triples[i].timestamp);   		 
-    		 insertNodeToList(list1, Node1);
-    		 insertNodeToList(list2, Node2);     		
+    		 Node1 = insertNodeToList(list1, Node1);
+    		 Node2 = insertNodeToList(list2, Node2);     		
     	  	 Node1.getOutNeighbors().add(Node2);  // adding directed edges
     		 Node2.getOutNeighbors().add(Node1); // adding directed edges
     	
     	}
     }
     
-    private void insertNodeToList(List<ComputerNode> list, ComputerNode node)
+    private ComputerNode insertNodeToList(List<ComputerNode> list, ComputerNode node)
     {
     	ComputerNode lastNode;
     	 if(!list.isEmpty()){
- 			lastNode = list.get(list.size()-1); //last node in list
+ 			lastNode = list.get(list.size() - 1); //last node in list
  			if(node.equals(lastNode))
  				node = lastNode;
  			else {
@@ -92,6 +92,8 @@ public class CommunicationsMonitor {
  		 }	
  		 else
  			 list.add(node);
+    	 
+    	 return node;
  		
     }
 
