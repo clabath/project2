@@ -66,61 +66,33 @@ public class CommunicationsMonitor {
     		 }
     		 
     		 
-    		 
-    		 Iterator<ComputerNode> iter1 = nodeMap.get(triples[i].c1).iterator();
-    		 Iterator<ComputerNode> iter2 = nodeMap.get(triples[i].c2).iterator();
-    	    	
+    		 List<ComputerNode> list1 = nodeMap.get(triples[i].c1);
+    		 List<ComputerNode> list2 = nodeMap.get(triples[i].c2);
     		 ComputerNode Node1 = new ComputerNode(triples[i].c1, triples[i].timestamp);
-    		 ComputerNode temp1 = null;
-    		 ComputerNode Node2 = new ComputerNode(triples[i].c2, triples[i].timestamp);
-    		 ComputerNode temp2 = null;
-       	  	
-    		 
-    		 while(iter1.hasNext()) //this while loop searches to see if Node1 exists and ensures Node1 is the object we want to modify
-    		 {						//it also appends the reference to the node to the list
-    			 temp1 = iter1.next();
-    			 if(Node1.equals(temp1))
-    			 {
-    				 Node1 = temp1;
-    				 break;
-    			 }
-    			
-    		 } 
-    		 
-    		 if(temp1 != null && !iter1.hasNext())
-    			 temp1.getOutNeighbors().add(Node1); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
-  
-    		 
-    
-			 if(!iter1.hasNext() && Node1 != temp1)
-			 {
-				nodeMap.get(triples[i].c1).add(Node1);   //create them
-			 }
-    		   	
-    		 while(iter2.hasNext())  //this while loop searches to see if Node2 exists and ensures Node2 is the object we want to modify
-    		 {						 //it also appends the reference to the node to the list
-    			 temp2 = iter2.next();
-    			 if(Node2.equals(temp2))
-    			 {
-    				 Node2 = temp2;
-    				 break;
-    			 }
-    		 } 
-    		 
-    		 if(temp2 != null && !iter2.hasNext())	
-    			 temp2.getOutNeighbors().add(Node2); //adding directed edge from (Cj, t) to (Cj, tk) if (Cj,t) exists
-    		 
-    	
-    		 if(!iter2.hasNext() && Node2 != temp2)
-			 {
-				nodeMap.get(triples[i].c2).add(Node2);   //create them
-			 }
-    		 
-
+    		 ComputerNode Node2 = new ComputerNode(triples[i].c2, triples[i].timestamp);   		 
+    		 insertNodeToList(list1, Node1);
+    		 insertNodeToList(list2, Node2);     		
     	  	 Node1.getOutNeighbors().add(Node2);  // adding directed edges
     		 Node2.getOutNeighbors().add(Node1); // adding directed edges
     	
     	}
+    }
+    
+    public void insertNodeToList(List<ComputerNode> list, ComputerNode node)
+    {
+    	ComputerNode lastNode;
+    	 if(!list.isEmpty()){
+ 			lastNode = list.get(list.size()-1); //last node in list
+ 			if(node.equals(lastNode))
+ 				node = lastNode;
+ 			else {
+ 				lastNode.getOutNeighbors().add(node); //adding directed edge from (Ci, t) to (Ci, tk) if (Ci,t) exists
+ 				list.add(node);
+ 			}
+ 		 }
+ 		 else
+ 			 list.add(node);
+ 		
     }
 
     /**
@@ -321,12 +293,10 @@ public class CommunicationsMonitor {
     
     public static void main(String args[]) {
     	CommunicationsMonitor coms = new CommunicationsMonitor();
- 
-    	
-
-    	for(int i = 1; i < 5000; i++) {
-    		coms.addCommunication(i, i+1, i);
-    	}
+    	coms.addCommunication(1, 2, 4);
+    	coms.addCommunication(2, 4, 8);
+    	coms.addCommunication(4, 3, 8);
+    	coms.addCommunication(1, 4, 12);
     	coms.createGraph();
     	
     	
@@ -369,21 +339,26 @@ public class CommunicationsMonitor {
     	System.out.println();
     	
     	List<ComputerNode> list = coms.queryInfection(c1,c2,t1,t2);
-    	Iterator<ComputerNode> it1 = list.iterator();
-    	ComputerNode temp;
-    	{
-    		System.out.println("One path is: ");
-    		while (it1.hasNext())
-    		{
-    			temp = it1.next();
-    			
-    			System.out.print("Computer " + temp.getID() + " at time " +temp.getTimestamp());
-    			if(it1.hasNext())
-    			{
-    				System.out.println("-->");
-    			}
-    		}
+    	Iterator<ComputerNode> it1 = null;
+    	if(!(list == null)) {
+    		it1 = list.iterator();
+	    	ComputerNode temp;
+	    	{
+	    		System.out.println("One path is: ");
+	    		while (it1.hasNext())
+	    		{
+	    			temp = it1.next();
+	    			
+	    			System.out.print("Computer " + temp.getID() + " at time " +temp.getTimestamp());
+	    			if(it1.hasNext())
+	    			{
+	    				System.out.println("-->");
+	    			}
+	    		}
+	    	}
     	}
+    	else
+    		System.out.print("No path exists");
 		System.out.println();
 		scan.close();
     }
